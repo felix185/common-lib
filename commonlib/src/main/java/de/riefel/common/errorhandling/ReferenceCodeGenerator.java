@@ -3,7 +3,6 @@ package de.riefel.common.errorhandling;
 import de.riefel.common.errorhandling.exception.TechnicalException;
 import de.riefel.common.validation.Preconditions;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -31,10 +30,10 @@ public final class ReferenceCodeGenerator {
      * Generates a random reference code with the provided length.
      *
      * @param length the length of the code to be generated.
-     * @return
+     * @return the generated reference code.
      */
     public static String generateReferenceCode(final int length) {
-
+        Preconditions.checkInterval(0, length, 9, "Code Length");
         final long generated = ThreadLocalRandom.current().nextLong((long)Math.pow(10, length - 1), (long)(Math.pow(10, length) - 1));
         return String.valueOf(generated);
     }
