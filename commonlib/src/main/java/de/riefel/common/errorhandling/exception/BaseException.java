@@ -1,8 +1,8 @@
 package de.riefel.common.errorhandling.exception;
 
 import de.riefel.common.errorhandling.IErrorCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.riefel.common.errorhandling.ReferenceCodeGenerator;
+import de.riefel.common.logging.Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -24,7 +24,7 @@ abstract class BaseException extends RuntimeException implements Serializable {
     /**
      * The {@link Logger}
      */
-    private static final Logger LOG = LoggerFactory.getLogger(BaseException.class);
+    private static final Logger LOG = Logger.getLogger(BaseException.class);
 
     /**
      * A message if no stacktrace is available (should usually not happen!!!)
@@ -37,6 +37,11 @@ abstract class BaseException extends RuntimeException implements Serializable {
     private final IErrorCode errorCode;
 
     /**
+     * The generated reference code of this exception.
+     */
+    private final String referenceCode;
+
+    /**
      * Constructor.
      *
      * @param errorCode the {@link IErrorCode} of this exception.
@@ -45,7 +50,9 @@ abstract class BaseException extends RuntimeException implements Serializable {
     BaseException(final IErrorCode errorCode, final String message) {
         super(getFormattedErrorCode(errorCode) + ": " + message);
         this.errorCode = errorCode;
+        this.referenceCode = ReferenceCodeGenerator.generateReferenceCode();
         LOG.error("{}: {}", getFormattedErrorCode(errorCode), message);
+        LOG.info("Generated reference code for exception with error code '{}' is: '{}'", getFormattedErrorCode(errorCode), this.referenceCode);
     }
 
     /**
@@ -76,6 +83,15 @@ abstract class BaseException extends RuntimeException implements Serializable {
      */
     public IErrorCode getErrorCode() {
         return this.errorCode;
+    }
+
+    /**
+     * Get the reference code of this exception.
+     *
+     * @return the reference code.
+     */
+    public String getReferenceCode() {
+        return this.referenceCode;
     }
 
     /**

@@ -16,12 +16,12 @@ class PreconditionsTest {
    @Test
    void checkNotNull_notNull_shouldReturnReference() {
        final String expected = "TEST";
-       final String actual = Preconditions.checkNotNull(expected, "any error message");
+       final String actual = Preconditions.checkNotNull(expected, "any argument");
        assertEquals(expected, actual);
    }
 
    @Test
    void checkNotNull_nullReference_shouldThrowBusinessException() {
-       assertThrows(BusinessException.class, () -> Preconditions.checkNotNull(null, "any error message"));
+       assertThrows(BusinessException.class, () -> Preconditions.checkNotNull(null, "any argument"));
    }
 }
